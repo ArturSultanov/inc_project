@@ -91,10 +91,10 @@ begin
     -- Logic gates
     AND_OUT <= READ_EN and CMP_EQUAL;
     XOR_OUT <= AND_OUT xor CLK_CNT_EN;
-    NOT_OUT1 <= not READ_EN;
-    NOT_OUT2 <= not XOR_OUT;
+    NOT_OUT1 <= not READ_EN; -- to RST of BIT_CNT
+    NOT_OUT2 <= not XOR_OUT; -- to RST of CLK_CNT
 
-    -- Assigning the output of the shift register to the DOUT pin
+    -- Send shift register to the DOUT pin
     DOUT <= SHIFT_REG_OUT;
 
 end architecture;

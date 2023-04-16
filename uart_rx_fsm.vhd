@@ -76,9 +76,9 @@ begin
                 CLK_CNT_EN <= '1';
                 DOUT_VLD <= '0';
 
-                if CLK_CNT = "10000" and DIN = '1' then -- If after 8 "DATA BITs" we get a "STOP BIT". "STOP BIT" is a logic 1 at data input.
-                    Next_State <= VALIDATING;
-                elsif CLK_CNT = "10000" and DIN = '0' then -- If after 8 "DATA BITs" we do not get a "STOP BIT". I consider this case as a mistake.
+                if CLK_CNT = "10000" and DIN = '1' then -- "STOP BIT" is a logic 1 at data input.
+                    Next_State <= VALIDATING;           -- Go to Validation state if after 8 "DATA BITs" we get a "STOP BIT". 
+                elsif CLK_CNT = "10000" and DIN = '0' then 
                     Next_State <= WAIT_FOR_START;
                 end if;
 
