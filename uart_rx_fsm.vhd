@@ -49,7 +49,7 @@ begin
                 CLK_CNT_EN <= '0';
                 DOUT_VLD <= '0';
 
-                if DIN = '0' then -- FSM get a "START BIT"
+                if DIN = '0' then -- FSM get a "START BIT".
                     Next_State <= WAIT_FOR_DATA;
                 end if;
 
@@ -58,7 +58,7 @@ begin
                 CLK_CNT_EN <= '1';
                 DOUT_VLD <= '0';
 
-                if CLK_CNT = "10111" then -- Waiting to 23 "MID BIT" in first "DATA BIT"
+                if CLK_CNT = "10111" then -- Waiting to 23 "MID BIT" in first "DATA BIT".
                     Next_State <= READING_DATA;
                 end if;
 
@@ -67,7 +67,7 @@ begin
                 CLK_CNT_EN <= '1';
                 DOUT_VLD <= '0';
 
-                if BIT_CNT = "1000" then -- Waiting ot read 8 "DATA BIT"
+                if BIT_CNT = "1000" then -- Waiting ot read 8 "DATA BIT".
                     Next_State <= WAIT_FOR_STOP;
                 end if;
 
@@ -76,9 +76,9 @@ begin
                 CLK_CNT_EN <= '1';
                 DOUT_VLD <= '0';
 
-                if CLK_CNT = "10000" and DIN = '1' then
+                if CLK_CNT = "10000" and DIN = '1' then -- If after 8 "DATA BITs" we get a "STOP BIT". "STOP BIT" is a logic 1 at data input.
                     Next_State <= VALIDATING;
-                elsif CLK_CNT = "10000" and DIN = '0' then
+                elsif CLK_CNT = "10000" and DIN = '0' then -- If after 8 "DATA BITs" we do not get a "STOP BIT". I consider this case as a mistake.
                     Next_State <= WAIT_FOR_START;
                 end if;
 
