@@ -24,11 +24,12 @@ end entity;
 architecture behavioral of UART_RX is
 
     -- Signals
+    signal DATA_IN          : std_logic;
     signal BIT_CNT          : std_logic_vector(3 downto 0) := (others => '0');
     signal CLK_CNT          : std_logic_vector(4 downto 0) := (others => '0');
     signal READ_EN          : std_logic;
     signal CLK_CNT_EN       : std_logic;
-    signal DOUT_VLD         : std_logic;
+    signal DOUT_VALID       : std_logic;
     signal SHIFT_REG_OUT    : std_logic_vector(7 downto 0) := (others => '0');
     signal AND_OUT          : std_logic;
     signal XOR_OUT          : std_logic;
@@ -37,18 +38,19 @@ architecture behavioral of UART_RX is
     signal CMP_EQUAL        : std_logic;
 
 begin
+    DATA_IN <= DIN;
 
     -- Instance of RX FSM
     fsm : entity work.UART_RX_FSM
     port map (
         CLK => CLK,
-        RST => RST
-        DIN       => DIN,
-        BIT_CNT   => BIT_CNT,
-        CLK_CNT   => CLK_CNT,
-        READ_EN   => READ_EN,
+        RST => RST,
+        DATA_IN => DATA_IN,
+        BIT_CNT => BIT_CNT,
+        CLK_CNT => CLK_CNT,
+        READ_EN => READ_EN,
         CLK_CNT_EN => CLK_CNT_EN,
-        DOUT_VLD  => DOUT_VLD
+        DOUT_VALID => DOUT_VALID
     );
 
     -- Default DOUT and DOUT_VLD values.
@@ -84,7 +86,7 @@ begin
         if RST = '1' then
             SHIFT_REG_OUT <= (others => '0');
         elsif rising_edge(CLK) and AND_OUT = '1' then
-            SHIFT_REG_OUT <= SHIFT_REG_OUT(6 downto 0) & DIN;
+            SHIFT_REG_OUT <= SHIFT_REG_OUT(6 downto 0) & DATA_IN;
         end if;
     end process;
 
@@ -96,5 +98,6 @@ begin
 
     -- Send shift register to the DOUT pin
     DOUT <= SHIFT_REG_OUT;
+    DOUT_VLD <= DOUT_VALID;
 
 end architecture;

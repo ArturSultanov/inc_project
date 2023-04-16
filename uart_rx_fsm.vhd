@@ -13,13 +13,13 @@ entity UART_RX_FSM is
         CLK                 : in    std_logic;
         RST                 : in    std_logic;
         -- User Inputs
-        DIN                 : in    std_logic;
+        DATA_IN                 : in    std_logic;
         BIT_CNT             : in    std_logic_vector(3 downto 0);
         CLK_CNT             : in    std_logic_vector(4 downto 0);
         -- Moore outputs
         READ_EN             : out   std_logic;
         CLK_CNT_EN          : out   std_logic;
-        DOUT_VLD            : out   std_logic
+        DOUT_VALID          : out   std_logic
     );
 end entity;
 
@@ -39,7 +39,7 @@ begin
     end process;
 
     -- FSM logic
-    process (Current_State, DIN, CLK_CNT, BIT_CNT)
+    process (Current_State, DATA_IN, CLK_CNT, BIT_CNT)
     begin
         Next_State <= WAIT_FOR_START;
 
@@ -47,16 +47,16 @@ begin
             when WAIT_FOR_START =>
                 READ_EN <= '0';
                 CLK_CNT_EN <= '0';
-                DOUT_VLD <= '0';
+                DOUT_VALID <= '0';
 
-                if DIN = '0' then -- FSM get a "START BIT".
+                if DATA_IN = '0' then -- FSM get a "START BIT".
                     Next_State <= WAIT_FOR_DATA;
                 end if;
 
             when WAIT_FOR_DATA =>
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
-                DOUT_VLD <= '0';
+                DOUT_VALID <= '0';
 
                 if CLK_CNT = "10111" then -- Waiting to 23 "MID BIT" in first "DATA BIT".
                     Next_State <= READING_DATA;
@@ -65,7 +65,7 @@ begin
             when READING_DATA =>
                 READ_EN <= '1';
                 CLK_CNT_EN <= '1';
-                DOUT_VLD <= '0';
+                DOUT_VALID <= '0';
 
                 if BIT_CNT = "1000" then -- Waiting ot read 8 "DATA BIT".
                     Next_State <= WAIT_FOR_STOP;
@@ -74,18 +74,18 @@ begin
             when WAIT_FOR_STOP =>
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
-                DOUT_VLD <= '0';
+                DOUT_VALID <= '0';
 
-                if CLK_CNT = "10000" and DIN = '1' then -- "STOP BIT" is a logic 1 at data input.
+                if CLK_CNT = "10000" and DATA_IN = '1' then -- "STOP BIT" is a logic 1 at data input.
                     Next_State <= VALIDATING;           -- Go to Validation state if after 8 "DATA BITs" we get a "STOP BIT". 
-                elsif CLK_CNT = "10000" and DIN = '0' then 
+                elsif CLK_CNT = "10000" and DATA_IN = '0' then 
                     Next_State <= WAIT_FOR_START;
                 end if;
 
             when VALIDATING =>
                 READ_EN <= '0';
                 CLK_CNT_EN <= '0';
-                DOUT_VLD <= '1';
+                DOUT_VALID <= '1';
 
                 Next_State <= WAIT_FOR_START;
 
