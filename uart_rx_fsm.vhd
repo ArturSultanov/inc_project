@@ -1,5 +1,5 @@
 -- uart_rx_fsm.vhd: UART controller - finite state machine controlling RX side
--- Author(s): Name Surname (xlogin00)
+-- Author(s): Artur Sultanov (xsulta01)
 
 library ieee;
 use ieee.std_logic_1164.all;
