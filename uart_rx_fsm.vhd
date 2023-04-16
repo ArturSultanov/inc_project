@@ -13,7 +13,7 @@ entity UART_RX_FSM is
         CLK                 : in    std_logic;
         RST                 : in    std_logic;
         -- User Inputs
-        DATA_IN_FS          : in    std_logic;
+        DATA_IN_FSM          : in    std_logic;
         BIT_CNT             : in    std_logic_vector(3 downto 0);
         CLK_CNT             : in    std_logic_vector(4 downto 0);
         -- Moore outputs
