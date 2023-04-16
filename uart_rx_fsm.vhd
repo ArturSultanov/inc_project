@@ -13,19 +13,20 @@ entity UART_RX_FSM is
         CLK                 : in    std_logic;
         RST                 : in    std_logic;
         -- User Inputs
-        DATA_IN_FSM          : in    std_logic;
+        DATA_IN_FSM         : in    std_logic;
         BIT_CNT             : in    std_logic_vector(3 downto 0);
         CLK_CNT             : in    std_logic_vector(4 downto 0);
         -- Moore outputs
         READ_EN             : out   std_logic;
         CLK_CNT_EN          : out   std_logic;
-        DOUT_VALID          : out   std_logic
+        VALID          : out   std_logic
     );
 end entity;
 
 architecture behavioral of UART_RX_FSM is
     type State_Type is (WAIT_FOR_START, WAIT_FOR_DATA, READING_DATA, WAIT_FOR_STOP, VALIDATING);
-    signal Current_State, Next_State : State_Type;
+    signal Current_State : State_Type := WAIT_FOR_START;
+    signal Next_State : State_Type := WAIT_FOR_START;
 
 begin
     -- Restart and state logic 
@@ -41,7 +42,6 @@ begin
     -- FSM logic
     process (Current_State, DATA_IN_FSM, CLK_CNT, BIT_CNT)
     begin
-        Next_State <= WAIT_FOR_START;
 
         case Current_State is
             when WAIT_FOR_START =>
