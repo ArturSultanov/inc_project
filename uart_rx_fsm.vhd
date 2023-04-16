@@ -28,7 +28,7 @@ architecture behavioral of UART_RX_FSM is
     signal Current_State, Next_State : State_Type;
 
 begin
-    -- Restart and logic 
+    -- Restart and state logic 
     process (CLK, RST)
     begin
         if RST = '1' then
@@ -42,37 +42,51 @@ begin
     process (Current_State, DIN, CLK_CNT, BIT_CNT)
     begin
         Next_State <= WAIT_FOR_START;
-        READ_EN <= '0';
-        CLK_CNT_EN <= '0';
-        DOUT_VLD <= '0';
 
         case Current_State is
             when WAIT_FOR_START =>
-                if DIN = '1' then
+                READ_EN <= '0';
+                CLK_CNT_EN <= '0';
+                DOUT_VLD <= '0';
+
+                if DIN = '0' then -- FSM get a "START BIT"
                     Next_State <= WAIT_FOR_DATA;
-                    CLK_CNT_EN <= '1';
                 end if;
 
             when WAIT_FOR_DATA =>
-                if CLK_CNT = "10111" then
+                READ_EN <= '0';
+                CLK_CNT_EN <= '1';
+                DOUT_VLD <= '0';
+
+                if CLK_CNT = "10111" then -- Waiting to 23 "MID BIT" in first "DATA BIT"
                     Next_State <= READING_DATA;
-                    READ_EN <= '1';
-                    CLK_CNT_EN <= '1';
                 end if;
 
             when READING_DATA =>
-                if BIT_CNT = "1000" then
+                READ_EN <= '1';
+                CLK_CNT_EN <= '1';
+                DOUT_VLD <= '0';
+
+                if BIT_CNT = "1000" then -- Waiting ot read 8 "DATA BIT"
                     Next_State <= WAIT_FOR_STOP;
-                    CLK_CNT_EN <= '1';
                 end if;
 
             when WAIT_FOR_STOP =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '1';
+                DOUT_VLD <= '0';
+
                 if CLK_CNT = "10000" and DIN = '1' then
                     Next_State <= VALIDATING;
-                    DOUT_VLD <= '1';
+                elsif CLK_CNT = "10000" and DIN = '0' then
+                    Next_State <= WAIT_FOR_START;
                 end if;
 
             when VALIDATING =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '0';
+                DOUT_VLD <= '1';
+
                 Next_State <= WAIT_FOR_START;
 
             when others =>
