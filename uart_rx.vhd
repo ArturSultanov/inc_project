@@ -1,5 +1,5 @@
 -- uart_rx.vhd: UART controller - receiving (RX) side
--- Author(s): Artur Sultanov (xsulta01)
+-- Author(s): Name Surname (xlogin00)
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -24,38 +24,46 @@ end entity;
 architecture behavioral of UART_RX is
 
     -- Signals
-    signal DATA_IN          : std_logic;
     signal BIT_CNT          : std_logic_vector(3 downto 0) := (others => '0');
     signal CLK_CNT          : std_logic_vector(4 downto 0) := (others => '0');
     signal READ_EN          : std_logic;
     signal CLK_CNT_EN       : std_logic;
-    signal DOUT_VALID       : std_logic;
     signal SHIFT_REG_OUT    : std_logic_vector(7 downto 0) := (others => '0');
+    signal CMP_EQUAL        : std_logic;
     signal AND_OUT          : std_logic;
     signal XOR_OUT          : std_logic;
     signal NOT_OUT1         : std_logic;
     signal NOT_OUT2         : std_logic;
-    signal CMP_EQUAL        : std_logic;
+
+
 
 begin
-    DATA_IN <= DIN;
 
     -- Instance of RX FSM
-    fsm : entity work.UART_RX_FSM
+    fsm: entity work.UART_RX_FSM
     port map (
         CLK => CLK,
         RST => RST,
-        DATA_IN => DATA_IN,
+        DATA_IN_FSM => DIN,
         BIT_CNT => BIT_CNT,
         CLK_CNT => CLK_CNT,
         READ_EN => READ_EN,
         CLK_CNT_EN => CLK_CNT_EN,
-        DOUT_VALID => DOUT_VALID
+        DOUT_VALID => DOUT_VLD
     );
 
-    -- Default DOUT and DOUT_VLD values.
     DOUT <= (others => '0');
     DOUT_VLD <= '0';
+
+    -- BIT_CNT counter of bits received.
+    p_bit_cnt : process (CLK, RST)
+    begin
+        if RST = '1' then
+            BIT_CNT <= (others => '0');
+        elsif rising_edge(CLK) and READ_EN = '1' then
+            BIT_CNT <= BIT_CNT + 1;
+        end if;
+    end process;
 
     -- CLK_CNT counter of of clock cycles.
     p_clk_cnt : process (CLK, RST)
@@ -64,16 +72,6 @@ begin
             CLK_CNT <= (others => '0');
         elsif rising_edge(CLK) and XOR_OUT = '1' then
             CLK_CNT <= CLK_CNT + 1;
-        end if;
-    end process;
-    
-    -- BIT_CNT counter of bits received.
-    p_bit_cnt : process (CLK, RST)
-    begin
-        if RST = '1' then
-            BIT_CNT <= (others => '0');
-        elsif rising_edge(CLK) and READ_EN = '1' then
-            BIT_CNT <= BIT_CNT + 1;
         end if;
     end process;
 
@@ -86,7 +84,7 @@ begin
         if RST = '1' then
             SHIFT_REG_OUT <= (others => '0');
         elsif rising_edge(CLK) and AND_OUT = '1' then
-            SHIFT_REG_OUT <= SHIFT_REG_OUT(6 downto 0) & DATA_IN;
+            SHIFT_REG_OUT <= SHIFT_REG_OUT(6 downto 0) & DIN;
         end if;
     end process;
 
@@ -98,6 +96,6 @@ begin
 
     -- Send shift register to the DOUT pin
     DOUT <= SHIFT_REG_OUT;
-    DOUT_VLD <= DOUT_VALID;
+
 
 end architecture;

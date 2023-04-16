@@ -13,7 +13,7 @@ entity UART_RX_FSM is
         CLK                 : in    std_logic;
         RST                 : in    std_logic;
         -- User Inputs
-        DATA_IN                 : in    std_logic;
+        DATA_IN_FS          : in    std_logic;
         BIT_CNT             : in    std_logic_vector(3 downto 0);
         CLK_CNT             : in    std_logic_vector(4 downto 0);
         -- Moore outputs
@@ -39,7 +39,7 @@ begin
     end process;
 
     -- FSM logic
-    process (Current_State, DATA_IN, CLK_CNT, BIT_CNT)
+    process (Current_State, DATA_IN_FSM, CLK_CNT, BIT_CNT)
     begin
         Next_State <= WAIT_FOR_START;
 
@@ -49,7 +49,7 @@ begin
                 CLK_CNT_EN <= '0';
                 DOUT_VALID <= '0';
 
-                if DATA_IN = '0' then -- FSM get a "START BIT".
+                if DATA_IN_FSM = '0' then -- FSM get a "START BIT".
                     Next_State <= WAIT_FOR_DATA;
                 end if;
 
@@ -76,9 +76,9 @@ begin
                 CLK_CNT_EN <= '1';
                 DOUT_VALID <= '0';
 
-                if CLK_CNT = "10000" and DATA_IN = '1' then -- "STOP BIT" is a logic 1 at data input.
+                if CLK_CNT = "10000" and DATA_IN_FSM = '1' then -- "STOP BIT" is a logic 1 at data input.
                     Next_State <= VALIDATING;           -- Go to Validation state if after 8 "DATA BITs" we get a "STOP BIT". 
-                elsif CLK_CNT = "10000" and DATA_IN = '0' then 
+                elsif CLK_CNT = "10000" and DATA_IN_FSM = '0' then 
                     Next_State <= WAIT_FOR_START;
                 end if;
 
