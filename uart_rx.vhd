@@ -22,6 +22,23 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
+
+
+	-- FSM outputs
+    signal read_en_fsm : std_logic;
+    signal clk_cnt_en_fsm : std_logic;
+    signal valid_fsm : std_logic;
+    -- FSM inputs
+    signal data_fsm : std_logic;
+    signal bit_cnt : std_logic_vector(3 downto 0) := "0000";
+    signal clk_cnt : std_logic_vector(4 downto 0) := "00000";
+    -- logic outputs
+    signal xor_out : std_logic;
+    signal not_out : std_logic;
+    signal cmp_equal : std_logic;
+    signal and_out : std_logic;
+
+
 begin
 
     -- Instance of RX FSM
@@ -31,7 +48,5 @@ begin
         RST => RST
     );
 
-    DOUT <= (others => '0');
-    DOUT_VLD <= '0';
 
 end architecture;
