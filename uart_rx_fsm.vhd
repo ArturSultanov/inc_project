@@ -61,7 +61,7 @@ begin
                     CLK_CNT_EN <= '0';
                     VALID <= '0';
 
-                    if DATA_IN = '0' then
+                    if DATA_IN = '0' then -- get start bit
                         current_state <= WAIT_FOR_START;
                     end if;
 
@@ -71,27 +71,27 @@ begin
                     CLK_CNT_EN <= '1';
                     VALID <= '0';
                     
-                    if CLK_CNT = "10111" then
+                    if CLK_CNT = "10111" then -- get 23 CLK
                         current_state <= CLK_CNT_RST;
                     end if;
                 -- restart CLK counter
                 when CLK_CNT_RST =>
                     READ_EN <= '0';
-                    CLK_CNT_EN <= '0';
+                    CLK_CNT_EN <= '0'; -- restart
                     VALID <= '0';
                     current_state <= READING_DATA;
 
                 -- reading 8 data bits.
                 when READING_DATA =>
-                    READ_EN <= '1';
+                    READ_EN <= '1';     -- CLK_CNT is limited by 16 CLK.
                     CLK_CNT_EN <= '1';
                     VALID <= '0';
                     
-                    if BIT_CNT = "1000" then
+                    if BIT_CNT = "1000" then -- get 8 bits
                         current_state <= READING_DAT;
                     end if;
 
-                -- wait for 
+                -- wait for stop bit. Stop bit is logic '1'.
                 when WAIT_FOR_STOP =>
                     READ_EN <= '0';
                     CLK_CNT_EN <= '1';
@@ -105,6 +105,7 @@ begin
                         end if;
                     end if;
 
+                -- validate result
                 when VALIDATING =>
                     READ_EN <= '0';
                     CLK_CNT_EN <= '1';
