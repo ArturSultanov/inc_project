@@ -18,7 +18,7 @@ entity UART_RX is
     );
 end entity;
 
-
+-----------------------------------
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
