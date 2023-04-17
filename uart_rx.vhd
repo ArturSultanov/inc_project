@@ -92,8 +92,8 @@ begin
 	begin
 		if rising_edge(CLK) then
 			if and_out = '1' then
-				--shift_out := DIN & shift_out(7 downto 1);
-                shift_out <= shift_out(6 downto 0) & DIN;
+				shift_out := DIN & shift_out(7 downto 1);
+                --shift_out <= shift_out(6 downto 0) & DIN;
 			end if;
 		end if;
 	end process;
