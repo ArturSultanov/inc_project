@@ -57,7 +57,7 @@ begin
 
             when READING_DATA =>                
                 if BIT_CNT = "1000" then -- get 8 bits
-                    next_state <= READING_DATA;
+                    next_state <= WAIT_FOR_STOP;
                 end if;
 
             when WAIT_FOR_STOP =>
