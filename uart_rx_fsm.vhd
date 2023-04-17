@@ -32,10 +32,12 @@ begin
     -- State switching logic
     p_state_switch : process (CLK, RST)
     begin
-        if RST = '1' then
-            current_state <= WAIT_FOR_START;
-        elsif rising_edge(CLK) then
-            current_state <= next_state;
+        if rising_edge(CLK) then
+            if RST = '1' then
+                current_state <= WAIT_FOR_START;
+            else 
+                current_state <= next_state;
+            end if;
         end if;
     end process;
 
@@ -43,24 +45,39 @@ begin
     begin
         case current_state is
             when WAIT_FOR_START =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '0';
+                VALID <= '0';
                 if DATA_IN = '0' then
                     next_state <= WAIT_FOR_DATA;
                 end if;
 
             when WAIT_FOR_DATA =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '1';
+                VALID <= '0';
                 if CLK_CNT = "10111" then -- get 23 CLK
                     next_state <= CLK_CNT_RST;
                 end if;
 
             when CLK_CNT_RST =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '0';
+                VALID <= '0';
                 next_state <= READING_DATA;
 
-            when READING_DATA =>                
+            when READING_DATA =>  
+                READ_EN <= '1';
+                CLK_CNT_EN <= '1';
+                VALID <= '0';              
                 if BIT_CNT = "1000" then -- get 8 bits
                     next_state <= WAIT_FOR_STOP;
                 end if;
 
             when WAIT_FOR_STOP =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '1';
+                VALID <= '0';
                 if CLK_CNT = "10000" then
                     if DATA_IN = '1' then
                         next_state <= VALIDATING;
@@ -70,52 +87,12 @@ begin
                 end if;
 
             when VALIDATING =>
+                READ_EN <= '0';
+                CLK_CNT_EN <= '0';
+                VALID <= '1';
                 next_state <= WAIT_FOR_START;
             when others => 
                 next_state <= WAIT_FOR_START;
-        end case; 
-    end process;
-
-
-
-    p_state_outputs : process (current_state)
-    begin
-
-        case current_state is
-            when WAIT_FOR_START =>
-            READ_EN <= '0';
-            CLK_CNT_EN <= '0';
-            VALID <= '0';
-
-            when WAIT_FOR_DATA =>
-            READ_EN <= '0';
-            CLK_CNT_EN <= '1';
-            VALID <= '0';
-
-
-            when CLK_CNT_RST =>
-            READ_EN <= '0';
-            CLK_CNT_EN <= '0';
-            VALID <= '0';
-
-
-            when READING_DATA =>
-            READ_EN <= '1';
-            CLK_CNT_EN <= '1';
-            VALID <= '0';
-
-
-            when WAIT_FOR_STOP =>
-            READ_EN <= '0';
-            CLK_CNT_EN <= '1';
-            VALID <= '0';
-
-            when VALIDATING =>
-            READ_EN <= '0';
-            CLK_CNT_EN <= '0';
-            VALID <= '1';
-
-
         end case; 
     end process;
 end architecture;
