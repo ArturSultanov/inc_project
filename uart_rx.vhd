@@ -34,7 +34,7 @@ architecture behavioral of UART_RX is
     signal clk_cnt : std_logic_vector(4 downto 0) := "00000";
     -- logic outputs
     signal xor_out : std_logic;
-    signal and_out : std_logic;
+    signal and_out : std_logic := '0';
     signal not_out : std_logic;
     --signal cmp_equal : std_logic;
     

@@ -12,7 +12,7 @@ entity UART_RX_FSM is
        CLK : in std_logic;
        RST : in std_logic;
        -- INPUTS
-       DATA_IN : in std_logic;
+       DIN : in std_logic;
        BIT_CNT : in std_logic_vector(3 downto 0);
        CLK_CNT : in std_logic_vector(4 downto 0);
        --OUPUTS
@@ -26,7 +26,8 @@ end entity;
 
 architecture behavioral of UART_RX_FSM is
     type state_type is (WAIT_FOR_START, WAIT_FOR_DATA, CLK_CNT_RST, READING_DATA, WAIT_FOR_STOP, VALIDATING);
-    signal current_state, next_state : state_type;
+    signal current_state : state_type := WAIT_FOR_START;
+    signal next_state : state_type := WAIT_FOR_START;
 begin
 
     -- State switching logic
@@ -39,12 +40,13 @@ begin
         end if;
     end process;
 
-    p_next_state_selecor : process (current_state, DATA_IN, BIT_CNT, CLK_CNT)
+    p_next_state_selecor : process (current_state, DIN, BIT_CNT, CLK_CNT)
     begin
+        next_state <= current_state;
         case current_state is
             when WAIT_FOR_START =>
-                if DATA_IN = '0' then
-                    next_state <= WAIT_FOR_DATA;
+                if DIN = '0' then
+                    next_state <= WAIT_FOR_START;
                 end if;
 
             when WAIT_FOR_DATA =>
@@ -71,8 +73,7 @@ begin
 
             when VALIDATING =>
                 next_state <= WAIT_FOR_START;
-            when others => 
-                next_state <= WAIT_FOR_START;
+            when others => null;
         end case; 
     end process;
 
@@ -114,8 +115,7 @@ begin
             READ_EN <= '0';
             CLK_CNT_EN <= '0';
             VALID <= '1';
-
-
+            when others => null;
         end case; 
     end process;
 end architecture;
