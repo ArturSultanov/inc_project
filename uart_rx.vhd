@@ -27,7 +27,7 @@ architecture behavioral of UART_RX is
 	-- FSM outputs
     signal read_en : std_logic;
     signal clk_cnt_en : std_logic;
-    signal valid : std_logic;
+    --signal valid : std_logic;
     -- FSM inputs
     --signal data_fsm : std_logic;
     signal bit_cnt : std_logic_vector(3 downto 0) := "0000";
@@ -53,7 +53,7 @@ begin
         --OUPUTS
         READ_EN => read_en,
         CLK_CNT_EN => clk_cnt_en,
-        VALID => valid
+        VALID => DOUT_VLD
     );
 
     -- Logic gates
@@ -80,7 +80,7 @@ begin
         if rising_edge(CLK) then
             if and_out = '1' then
                 bit_cnt <= bit_cnt + 1;
-            elsif valid = '1' then
+            elsif DOUT_VLD = '1' then
                 bit_cnt <= "0000";
             end if;
         end if;
@@ -100,7 +100,7 @@ begin
 	end process;
 
 
-    DOUT_VLD <= valid;
+    --DOUT_VLD <= valid;
 
 
 
