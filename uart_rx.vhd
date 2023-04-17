@@ -83,10 +83,10 @@ begin
 	begin
 		if rising_edge(CLK) then
 			if valid = '1' then
-				cnt_bits <= "0000";
+				bit_cnt <= "0000";
 			else
 				if and_out = '1' then
-					cnt_bits <= cnt_bits + 1;
+					bit_cnt <= bit_cnt + 1;
 				end if;
 			end if;
 		end if;
