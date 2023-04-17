@@ -56,7 +56,7 @@ begin
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
                 VALID <= '0';
-                if CLK_CNT = "0111" then
+                if CLK_CNT = "0110" then
                     next_state <= CLK_CNT_RST;
                 end if;
 
