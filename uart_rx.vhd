@@ -36,7 +36,7 @@ architecture behavioral of UART_RX is
     signal xor_out : std_logic;
     signal and_out : std_logic := '0';
     signal not_out : std_logic;
-    --signal cmp_equal : std_logic;
+    signal cmp_equal : std_logic;
     
 begin
 
@@ -78,21 +78,17 @@ begin
         end process;
 
     -- Bit counter
-    p_bit_cnt : process (and_out, valid)
+    p_bit_cnt : process (and_out)
     begin
         if and_out = '1' then
-            bit_cnt <= bit_cnt + 1;
-        else
-            bit_cnt <= bit_cnt + 0;
+            bit_cnt <= bit_cnt + 1;s
         end if;
     end process;
 
-    p_bit_cnt_restart : process (and_out, valid)
+    p_bit_cnt_restart : process (valid)
     begin
         if valid = '1' then
             bit_cnt <= "0000";
-        else
-            bit_cnt <= bit_cnt
         end if;
     end process;
 
