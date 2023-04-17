@@ -27,77 +27,95 @@ end entity;
 architecture behavioral of UART_RX_FSM is
     type state_type is (WAIT_FOR_START, WAIT_FOR_DATA, CLK_CNT_RST, READING_DATA, WAIT_FOR_STOP, VALIDATING);
     signal current_state : state_type := WAIT_FOR_START;
+    signal next_state : state_type := WAIT_FOR_START;
 begin
+
+    -- State switching logic
+    p_state_switch : process (CLK, RST)
+    begin
+        if RST = '1' then
+            current_state <= WAIT_FOR_START;
+        elsif rising_edge(CLK) then
+            current_state <= next_state;
+        end if;
+    end process;
 
     p_next_state_selecor : process (current_state, DATA_IN, BIT_CNT, CLK_CNT)
     begin
-        if rising_edge(CLK) then -- rising edge CLK
-            if RST = '1' then -- RST
-               current_state <= WAIT_FOR_START;
-            --end if;
-            else
-                case current_state is
-                    -- waiting for start bit. Start bit is logic '0'.
-                    when WAIT_FOR_START =>
-                        READ_EN <= '0';
-                        CLK_CNT_EN <= '0';
-                        VALID <= '0';
+        next_state <= current_state;
+        case current_state is
+            when WAIT_FOR_START =>
+                if DATA_IN = '0' then
+                    next_state <= WAIT_FOR_START;
+                end if;
 
-                        if DATA_IN = '0' then -- get start bit
-                            current_state <= WAIT_FOR_START;
-                        end if;
+            when WAIT_FOR_DATA =>
+                if CLK_CNT = "10111" then -- get 23 CLK
+                    next_state <= CLK_CNT_RST;
+                end if;
 
-                    -- waiting 23 CLK for mid bit of first data bit. 
-                    when WAIT_FOR_DATA =>
-                        READ_EN <= '0';
-                        CLK_CNT_EN <= '1';
-                        VALID <= '0';
-                        
-                        if CLK_CNT = "10111" then -- get 23 CLK
-                            current_state <= CLK_CNT_RST;
-                        end if;
+            when CLK_CNT_RST =>
+                next_state <= READING_DATA;
 
-                    -- restart CLK counter
-                    when CLK_CNT_RST =>
-                        READ_EN <= '0';
-                        CLK_CNT_EN <= '0'; -- restart
-                        VALID <= '0';
-                        current_state <= READING_DATA;
+            when READING_DATA =>                
+                if BIT_CNT = "1000" then -- get 8 bits
+                    next_state <= READING_DATA;
+                end if;
 
-                    -- reading 8 data bits.
-                    when READING_DATA =>
-                        READ_EN <= '1';     -- CLK_CNT is limited by 16 CLK.
-                        CLK_CNT_EN <= '1';
-                        VALID <= '0';
-                        
-                        if BIT_CNT = "1000" then -- get 8 bits
-                            current_state <= READING_DATA;
-                        end if;
+            when WAIT_FOR_STOP =>
+                if CLK_CNT = "10000" then
+                    if DATA_IN = '1' then
+                        next_state <= VALIDATING;
+                    else
+                        next_state <= WAIT_FOR_START;
+                    end if;
+                end if;
 
-                    -- wait for stop bit. Stop bit is logic '1'.
-                    when WAIT_FOR_STOP =>
-                        READ_EN <= '0';
-                        CLK_CNT_EN <= '1';
-                        VALID <= '0';
+            when VALIDATING =>
+                next_state <= WAIT_FOR_START;
+            when others => null;
+        end case; 
+    end process;
 
-                        if CLK_CNT = "10000" then
-                            if DATA_IN = '1' then
-                                current_state <= VALIDATING;
-                            else
-                                current_state <= WAIT_FOR_START;
-                            end if;
-                        end if;
 
-                    -- validate result
-                    when VALIDATING =>
-                        READ_EN <= '0';
-                        CLK_CNT_EN <= '1';
-                        VALID <= '1';
-                        current_state <= WAIT_FOR_START;
 
-                    when others => null;
-                end case; 
-            end if; -- RST
-        end if; -- rising edge CLK
+    p_state_outputs : process (current_state)
+    begin
+
+        case current_state is
+            when WAIT_FOR_START =>
+            READ_EN <= '0';
+            CLK_CNT_EN <= '0';
+            VALID <= '0';
+
+            when WAIT_FOR_DATA =>
+            READ_EN <= '0';
+            CLK_CNT_EN <= '1';
+            VALID <= '0';
+
+
+            when CLK_CNT_RST =>
+            READ_EN <= '0';
+            CLK_CNT_EN <= '0';
+            VALID <= '0';
+
+
+            when READING_DATA =>
+            READ_EN <= '1';
+            CLK_CNT_EN <= '1';
+            VALID <= '0';
+
+
+            when WAIT_FOR_STOP =>
+            READ_EN <= '0';
+            CLK_CNT_EN <= '1';
+            VALID <= '0';
+
+            when VALIDATING =>
+            READ_EN <= '0';
+            CLK_CNT_EN <= '0';
+            VALID <= '1';
+            when others => null;
+        end case; 
     end process;
 end architecture;

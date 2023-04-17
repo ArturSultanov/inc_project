@@ -36,7 +36,7 @@ architecture behavioral of UART_RX is
     signal xor_out : std_logic;
     signal and_out : std_logic;
     signal not_out : std_logic;
-    --signal cmp_equal : std_logic;
+    signal cmp_equal : std_logic;
     
 begin
 
@@ -55,37 +55,32 @@ begin
         CLK_CNT_EN => clk_cnt_en,
         VALID => valid
     );
-       -- CLK counter
-       p_clk_cnt : process (CLK)
-       begin
-           if rising_edge(CLK) then
-               if xor_out = '1' then
-                   clk_cnt <= clk_cnt + 1;
-               else
-                   clk_cnt <= "00000";
-               end if;
-           end if;
-       end process;
-    
-       -- CMP equal
-        p_cmp_equal : process (clk_cnt)
-        begin
-            if clk_cnt = "10000" then
-                cmp_equal <= '1';
+
+    -- Logic gates
+    xor_out <= clk_cnt_en xor and_out;
+    and_out <= read_en and cmp_equal;
+    not_out <= not xor_out;
+    cmp_equal <= '1' when clk_cnt = "10000" else '0'; -- NOT SURE IF IT WORKS
+
+    -- CLK counter
+    p_clk_cnt : process (CLK)
+    begin
+        if rising_edge(CLK) then
+            if xor_out = '1' then
+                clk_cnt <= clk_cnt + 1;
             else
-                cmp_equal <= '0';
+                clk_cnt <= "00000";
             end if;
-        end process;
+        end if;
+    end process;
 
     -- Bit counter
-    p_bit_cnt : process (and_out, valid)
+    p_bit_cnt : process (and_out)
     begin
         if and_out = '1' then
             bit_cnt <= bit_cnt + 1;
         elsif valid = '1' then
             bit_cnt <= "0000";
-        else
-            bit_cnt <= bit_cnt
         end if;
     end process;
 
@@ -101,11 +96,4 @@ begin
 			end if;
 		end if;
 	end process;
-
-    -- Logic gates
-    and_out <= read_en and cmp_equal;
-    xor_out <= clk_cnt_en xor and_out;
-    not_out <= not xor_out;
-
-    DOUT_VLD <= valid;
 end architecture;
