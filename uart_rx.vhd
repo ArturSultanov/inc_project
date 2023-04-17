@@ -70,7 +70,7 @@ begin
        -- CMP equal
         p_cmp_equal : process (clk_cnt)
         begin
-            if clk_cnt = "10000" then
+            if clk_cnt = "01111" then
                 cmp_equal <= '1';
             else
                 cmp_equal <= '0';
