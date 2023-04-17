@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-17T14:08:13.862Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15" etag="FQGmWa8vRNVSZIujTz_M" version="21.1.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-17T14:08:35.542Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15" etag="crpw1TuzirlsTbkUQZng" version="21.1.8" type="github">
   <diagram name="Page-1" id="wcoBjHvXgBKuY1BlQ7IX">
-    <mxGraphModel dx="153" dy="108" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="128" dy="91" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -73,8 +73,24 @@
         <mxCell id="Cq8n0TCiu43TakanwMMQ-43" value="&lt;span style=&quot;font-size: 11px;&quot;&gt;&lt;font color=&quot;#ff0000&quot;&gt;BIT_CNT&lt;/font&gt;&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=none;" parent="1FKGHby47MiAxsP9Uc5e-16" vertex="1">
           <mxGeometry x="370" y="290" width="65" height="22" as="geometry" />
         </mxCell>
+        <mxCell id="Cq8n0TCiu43TakanwMMQ-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.011;entryY=0.616;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" parent="1FKGHby47MiAxsP9Uc5e-16" source="Cq8n0TCiu43TakanwMMQ-10" target="1FKGHby47MiAxsP9Uc5e-28" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="352" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xfVSi9ghaYqdGzDr46ja-1" value="" style="group" vertex="1" connectable="0" parent="1FKGHby47MiAxsP9Uc5e-16">
+          <mxGeometry x="244" y="50" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Cq8n0TCiu43TakanwMMQ-10" value="" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.logic_gates.logic_gate;operation=xor;" parent="xfVSi9ghaYqdGzDr46ja-1" vertex="1">
+          <mxGeometry width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="UN3h619YWNNhsJVaDMtR-85" value="XOR" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="xfVSi9ghaYqdGzDr46ja-1" vertex="1">
+          <mxGeometry x="5" y="5" width="50" height="30" as="geometry" />
+        </mxCell>
         <mxCell id="1FKGHby47MiAxsP9Uc5e-78" value="" style="group" parent="1FKGHby47MiAxsP9Uc5e-16" vertex="1" connectable="0">
-          <mxGeometry x="350" y="-30" width="180" height="82" as="geometry" />
+          <mxGeometry x="350" y="29" width="180" height="82" as="geometry" />
         </mxCell>
         <mxCell id="1FKGHby47MiAxsP9Uc5e-24" value="" style="group" parent="1FKGHby47MiAxsP9Uc5e-78" vertex="1" connectable="0">
           <mxGeometry x="40" width="140" height="82" as="geometry" />
@@ -113,18 +129,6 @@
         </mxCell>
         <mxCell id="1FKGHby47MiAxsP9Uc5e-76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1FKGHby47MiAxsP9Uc5e-78" source="1FKGHby47MiAxsP9Uc5e-29" target="1FKGHby47MiAxsP9Uc5e-74" edge="1">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Cq8n0TCiu43TakanwMMQ-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.007;entryY=0.583;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" parent="1FKGHby47MiAxsP9Uc5e-16" source="Cq8n0TCiu43TakanwMMQ-10" target="1FKGHby47MiAxsP9Uc5e-28" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="xfVSi9ghaYqdGzDr46ja-1" value="" style="group" vertex="1" connectable="0" parent="1FKGHby47MiAxsP9Uc5e-16">
-          <mxGeometry x="244" y="50" width="60" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Cq8n0TCiu43TakanwMMQ-10" value="" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.logic_gates.logic_gate;operation=xor;" parent="xfVSi9ghaYqdGzDr46ja-1" vertex="1">
-          <mxGeometry width="60" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="UN3h619YWNNhsJVaDMtR-85" value="XOR" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="xfVSi9ghaYqdGzDr46ja-1" vertex="1">
-          <mxGeometry x="5" y="5" width="50" height="30" as="geometry" />
         </mxCell>
         <mxCell id="1FKGHby47MiAxsP9Uc5e-61" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="410" y="260" width="200" height="82" as="geometry" />
