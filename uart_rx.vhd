@@ -27,7 +27,7 @@ architecture behavioral of UART_RX is
 	-- FSM outputs
     signal read_en : std_logic;
     signal clk_cnt_en : std_logic;
-    --signal valid : std_logic;
+    signal valid : std_logic;
     -- FSM inputs
     --signal data_fsm : std_logic;
     signal bit_cnt : std_logic_vector(3 downto 0) := "0000";
@@ -41,8 +41,8 @@ architecture behavioral of UART_RX is
 begin
 
     -- Instance of RX FSM
-    --fsm: entity work.UART_RX_FSM
-    fsm: entity work.UART_RX_FSM(behavioral)
+    fsm: entity work.UART_RX_FSM
+    --fsm: entity work.UART_RX_FSM(behavioral)
     port map (
         CLK => CLK,
         RST => RST,
@@ -53,7 +53,7 @@ begin
         --OUPUTS
         READ_EN => read_en,
         CLK_CNT_EN => clk_cnt_en,
-        VALID => DOUT_VLD
+        VALID => valid
     );
 
     -- Logic gates
@@ -68,21 +68,19 @@ begin
         if rising_edge(CLK) then
             if xor_out = '1' then
                 clk_cnt <= clk_cnt + 1;
-            elsif xor_out = '0' then
+            else
                 clk_cnt <= "00000";
             end if;
         end if;
     end process;
 
     -- Bit counter
-    p_bit_cnt : process (CLK)
+    p_bit_cnt : process (and_out)
     begin
-        if rising_edge(CLK) then
-            if and_out = '1' then
-                bit_cnt <= bit_cnt + 1;
-            elsif DOUT_VLD = '1' then
-                bit_cnt <= "0000";
-            end if;
+        if and_out = '1' then
+            bit_cnt <= bit_cnt + 1;
+        elsif valid = '1' then
+            bit_cnt <= "0000";
         end if;
     end process;
 
@@ -93,14 +91,14 @@ begin
 		if rising_edge(CLK) then
 			if and_out = '1' then
 				shift_out := DIN & shift_out(7 downto 1);
-                DOUT <= shift_out;
+                   DOUT <= shift_out;
                 --shift_out <= shift_out(6 downto 0) & DIN;
 			end if;
 		end if;
 	end process;
 
 
-    --DOUT_VLD <= valid;
+    DOUT_VLD <= valid;
 
 
 
