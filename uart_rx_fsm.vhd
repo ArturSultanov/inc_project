@@ -18,7 +18,7 @@ entity UART_RX_FSM is
        --OUPUTS
        READ_EN : out std_logic;
        CLK_CNT_EN : out std_logic;
-       VALID : out std_logic;
+       VALID : out std_logic
     );
 end entity;
 
@@ -31,7 +31,7 @@ architecture behavioral of UART_RX_FSM is
 
 begin
 
-    if rising_edge(CLK) then    -- rising edge CLK
+    --if rising_edge(CLK) then    -- rising edge CLK
 
         -- restast and next state switch logic
         --p_next_state_switch : process (CLK, RST)
@@ -46,6 +46,7 @@ begin
         -- next state selector
         p_next_state_selecor : process (current_state, DATA_IN, BIT_CNT, CLK_CNT)
         begin
+        if rising_edge(CLK) then -- rising edge CLK
 
             if RST = '1' then
                 current_state <= WAIT_FOR_START;
@@ -88,7 +89,7 @@ begin
                     VALID <= '0';
                     
                     if BIT_CNT = "1000" then -- get 8 bits
-                        current_state <= READING_DAT;
+                        current_state <= READING_DATA;
                     end if;
 
                 -- wait for stop bit. Stop bit is logic '1'.
@@ -119,8 +120,8 @@ begin
 
 
 
-
+        end if; -- rising edge CLK
         end process;
 
-    end if; -- rising edge CLK
+    --end if; -- rising edge CLK
 end architecture;
