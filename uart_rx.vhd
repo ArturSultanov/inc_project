@@ -29,7 +29,7 @@ architecture behavioral of UART_RX is
     signal clk_cnt_en : std_logic;
     signal valid : std_logic;
     -- FSM inputs
-    signal data_fsm : std_logic;
+    --signal data_fsm : std_logic;
     signal bit_cnt : std_logic_vector(3 downto 0) := "0000";
     signal clk_cnt : std_logic_vector(4 downto 0) := "00000";
     -- logic outputs
@@ -41,13 +41,13 @@ architecture behavioral of UART_RX is
 begin
 
     -- Instance of RX FSM
-    fsm: entity work.UART_RX_FSM
-    --fsm: entity work.UART_RX_FSM(behavioral)
+    --fsm: entity work.UART_RX_FSM
+    fsm: entity work.UART_RX_FSM(behavioral)
     port map (
         CLK => CLK,
         RST => RST,
         -- INPUTS
-        DATA_IN => data_fsm,
+        DATA_IN => DIN,
         BIT_CNT => bit_cnt,
         CLK_CNT => clk_cnt,
         --OUPUTS
@@ -56,12 +56,55 @@ begin
         VALID => valid
     );
 
-    
     -- Logic gates
     xor_out <= clk_cnt_en xor and_out;
     and_out <= read_en and cmp_equal;
     not_out <= not xor_out;
-    cmp_equal <= '1' when clk_cnt = "10000" else '0';
+    cmp_equal <= '1' when clk_cnt = "10000" else '0'; -- NOT SURE IF IT WORKS
 
+    -- CLK counter
+    p_clk_cnt : process (CLK)
+    begin
+        if rising_edge(CLK) then
+            if xor_out = '1' then
+                clk_cnt <= clk_cnt + 1;
+            elsif xor_out = '0' then
+                clk_cnt <= "00000";
+            end if;
+        end if;
+    end process;
+
+    -- Bit counter
+    p_bit_cnt : process (CLK)
+    begin
+        if rising_edge(CLK) then
+            if and_out = '1' then
+                bit_cnt <= bit_cnt + 1;
+            elsif valid = '1' then
+                bit_cnt <= "0000";
+            end if;
+        end if;
+    end process;
+
+    -- Shift register
+    p_shift_register : process (CLK)
+		variable shift_out : std_logic_vector(7 downto 0);
+	begin
+		if rising_edge(CLK) then
+			if and_out = '1' then
+				--shift_out := DIN & shift_out(7 downto 1);
+                shift_out <= shift_out(6 downto 0) & DIN;
+			end if;
+		end if;
+	end process;
+
+
+    DOUT <= shift_out;
+    DOUT_VLD <= valid;
+
+
+
+
+    
 
 end architecture;
