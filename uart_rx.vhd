@@ -77,20 +77,21 @@ begin
             end if;
         end process;
 
-    -- Bit counter
-    p_bit_cnt : process (and_out)
-    begin
-        if and_out = '1' then
-            bit_cnt <= bit_cnt + 1;s
-        end if;
-    end process;
 
-    p_bit_cnt_restart : process (valid)
-    begin
-        if valid = '1' then
-            bit_cnt <= "0000";
-        end if;
-    end process;
+    	-- Bit counter
+	p_clk_bits : process (CLK)
+	begin
+		if rising_edge(CLK) then
+			if valid = '1' then
+				cnt_bits <= "0000";
+			else
+				if and_out = '1' then
+					cnt_bits <= cnt_bits + 1;
+				end if;
+			end if;
+		end if;
+	end process;
+
 
     -- Shift register
     p_shift_register : process (CLK)
