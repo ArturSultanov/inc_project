@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-04-17T14:08:54.926Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15" etag="IkTF8nHUm6-pHaC8srzi" version="21.1.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-17T14:09:15.180Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15" etag="GaB0eKXe9x9iLmdqX86k" version="21.1.8" type="github">
   <diagram name="Page-1" id="wcoBjHvXgBKuY1BlQ7IX">
     <mxGraphModel dx="185" dy="131" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -73,18 +73,16 @@
         <mxCell id="Cq8n0TCiu43TakanwMMQ-43" value="&lt;span style=&quot;font-size: 11px;&quot;&gt;&lt;font color=&quot;#ff0000&quot;&gt;BIT_CNT&lt;/font&gt;&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=none;" parent="1FKGHby47MiAxsP9Uc5e-16" vertex="1">
           <mxGeometry x="370" y="290" width="65" height="22" as="geometry" />
         </mxCell>
-        <mxCell id="Cq8n0TCiu43TakanwMMQ-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.011;entryY=0.616;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" parent="1FKGHby47MiAxsP9Uc5e-16" source="Cq8n0TCiu43TakanwMMQ-10" target="1FKGHby47MiAxsP9Uc5e-28" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="352" y="70" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="xfVSi9ghaYqdGzDr46ja-1" value="" style="group" vertex="1" connectable="0" parent="1FKGHby47MiAxsP9Uc5e-16">
           <mxGeometry x="244" y="50" width="60" height="40" as="geometry" />
         </mxCell>
         <mxCell id="Cq8n0TCiu43TakanwMMQ-10" value="" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.logic_gates.logic_gate;operation=xor;" parent="xfVSi9ghaYqdGzDr46ja-1" vertex="1">
           <mxGeometry width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="xfVSi9ghaYqdGzDr46ja-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="xfVSi9ghaYqdGzDr46ja-1" source="UN3h619YWNNhsJVaDMtR-85">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="156" y="20" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="UN3h619YWNNhsJVaDMtR-85" value="XOR" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="xfVSi9ghaYqdGzDr46ja-1" vertex="1">
           <mxGeometry x="5" y="5" width="50" height="30" as="geometry" />
