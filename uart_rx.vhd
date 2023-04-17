@@ -43,9 +43,18 @@ begin
 
     -- Instance of RX FSM
     fsm: entity work.UART_RX_FSM
+    --fsm: entity work.UART_RX_FSM(behavioral)
     port map (
         CLK => CLK,
-        RST => RST
+        RST => RST,
+        -- INPUTS
+        DATA_IN => data_fsm,
+        BIT_CNT => bit_cnt,
+        CLK_CNT => clk_cnt,
+        --OUPUTS
+        READ_EN => read_en_fsm,
+        CLK_CNT_EN => clk_cnt_en_fsm,
+        VALID => valid_fsm
     );
 
 
