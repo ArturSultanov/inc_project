@@ -82,7 +82,14 @@ begin
     begin
         if and_out = '1' then
             bit_cnt <= bit_cnt + 1;
-        elsif valid = '1' then
+        else
+            bit_cnt <= bit_cnt + 0;
+        end if;
+    end process;
+
+    p_bit_cnt_restart : process (and_out, valid)
+    begin
+        if valid = '1' then
             bit_cnt <= "0000";
         else
             bit_cnt <= bit_cnt
