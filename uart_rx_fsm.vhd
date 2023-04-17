@@ -14,7 +14,7 @@ entity UART_RX_FSM is
        -- INPUTS
        DATA_IN : in std_logic;
        BIT_CNT : in std_logic_vector(3 downto 0);
-       CLK_CNT : in std_logic_vector(4 downto 0);
+       CLK_CNT : in std_logic_vector(3 downto 0);
        --OUPUTS
        READ_EN : out std_logic;
        CLK_CNT_EN : out std_logic;
@@ -25,7 +25,7 @@ end entity;
 
 
 architecture behavioral of UART_RX_FSM is
-    type state_type is (WAIT_FOR_START, WAIT_FOR_DATA, CLK_CNT_RST, READING_DATA, WAIT_FOR_STOP, VALIDATING);
+    type state_type is (WAIT_FOR_START, WAIT_FOR_MID_BIT, CLK_CNT_RST, READING_DATA, WAIT_FOR_STOP, VALIDATING);
     signal current_state, next_state : state_type;
 begin
 
@@ -46,17 +46,17 @@ begin
         case current_state is
             when WAIT_FOR_START =>
                 READ_EN <= '0';
-                CLK_CNT_EN <= '0';
+                CLK_CNT_EN <= '1';
                 VALID <= '0';
                 if DATA_IN = '0' then
-                    next_state <= WAIT_FOR_DATA;
+                    next_state <= WAIT_FOR_MID_BIT;
                 end if;
 
-            when WAIT_FOR_DATA =>
+            when WAIT_FOR_MID_BIT =>
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
                 VALID <= '0';
-                if CLK_CNT = "10111" then -- get 23 CLK
+                if CLK_CNT = "0111" then
                     next_state <= CLK_CNT_RST;
                 end if;
 
@@ -78,7 +78,7 @@ begin
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
                 VALID <= '0';
-                if CLK_CNT = "10000" then
+                if CLK_CNT = "1111" then 
                     if DATA_IN = '1' then
                         next_state <= VALIDATING;
                     else
