@@ -5,7 +5,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
------------------------------------
+
 
 entity UART_RX_FSM is
     port(
@@ -22,7 +22,7 @@ entity UART_RX_FSM is
     );
 end entity;
 
------------------------------------
+
 
 architecture behavioral of UART_RX_FSM is
     type state_type is (WAIT_FOR_START, WAIT_FOR_DATA, CLK_CNT_RST, READING_DATA, WAIT_FOR_STOP, VALIDATING);
