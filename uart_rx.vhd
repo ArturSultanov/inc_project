@@ -31,7 +31,7 @@ architecture behavioral of UART_RX is
     -- FSM inputs
     --signal data_fsm : std_logic;
     signal bit_cnt : std_logic_vector(3 downto 0) := "0000";
-    signal clk_cnt : std_logic_vector(4 downto 0) := "00000";
+    signal clk_cnt : std_logic_vector(3 downto 0) := "0000";
     -- logic outputs
     signal xor_out : std_logic;
     signal and_out : std_logic := '0';
@@ -62,7 +62,7 @@ begin
                if xor_out = '1' then
                    clk_cnt <= clk_cnt + 1;
                else
-                   clk_cnt <= "00000";
+                   clk_cnt <= "0000";
                end if;
            end if;
        end process;
@@ -70,7 +70,7 @@ begin
        -- CMP equal
         p_cmp_equal : process (clk_cnt)
         begin
-            if clk_cnt = "01111" then
+            if clk_cnt = "1111" then
                 cmp_equal <= '1';
             else
                 cmp_equal <= '0';

@@ -14,7 +14,7 @@ entity UART_RX_FSM is
        -- INPUTS
        DATA_IN : in std_logic;
        BIT_CNT : in std_logic_vector(3 downto 0);
-       CLK_CNT : in std_logic_vector(4 downto 0);
+       CLK_CNT : in std_logic_vector(3 downto 0);
        --OUPUTS
        READ_EN : out std_logic;
        CLK_CNT_EN : out std_logic;
@@ -56,7 +56,7 @@ begin
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
                 VALID <= '0';
-                if CLK_CNT = "00111" then
+                if CLK_CNT = "0111" then
                     next_state <= CLK_CNT_RST;
                 end if;
 
@@ -78,7 +78,7 @@ begin
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1';
                 VALID <= '0';
-                if CLK_CNT = "10000" then
+                if CLK_CNT = "1111" then
                     if DATA_IN = '1' then
                         next_state <= VALIDATING;
                     else
