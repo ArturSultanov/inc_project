@@ -56,7 +56,7 @@ begin
                 READ_EN <= '0';
                 CLK_CNT_EN <= '1'; -- CLK counter in unlimited mode.
                 VALID <= '0';
-                if CLK_CNT = "0111" then -- waiting 8 clk to get a mid-bit of start-bit.
+                if CLK_CNT = "0111" then -- waiting 7 clk to get a mid-bit of start-bit.
                     next_state <= CLK_CNT_RST;
                 end if;
 
