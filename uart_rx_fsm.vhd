@@ -44,33 +44,33 @@ begin
     p_next_state_selecor : process (current_state, DATA_IN, BIT_CNT, CLK_CNT)
     begin
         case current_state is
-            when WAIT_FOR_START =>
+            when WAIT_FOR_START => -- waiting for start-bit.
                 READ_EN <= '0';
                 CLK_CNT_EN <= '0';
                 VALID <= '0';
-                if DATA_IN = '0' then
+                if DATA_IN = '0' then -- start-bit is logic '0'.
                     next_state <= WAIT_FOR_MID_BIT;
                 end if;
 
             when WAIT_FOR_MID_BIT =>
                 READ_EN <= '0';
-                CLK_CNT_EN <= '1';
+                CLK_CNT_EN <= '1'; -- CLK counter in unlimited mode.
                 VALID <= '0';
-                if CLK_CNT = "0110" then
+                if CLK_CNT = "0110" then -- waiting 6 clk to get a mid-bit of start-bit.
                     next_state <= CLK_CNT_RST;
                 end if;
 
-            when CLK_CNT_RST =>
+            when CLK_CNT_RST => -- restart CLK counter. 
                 READ_EN <= '0';
                 CLK_CNT_EN <= '0';
                 VALID <= '0';
                 next_state <= READING_DATA;
 
-            when READING_DATA =>  
+            when READING_DATA => -- here is the mid-bit of start-bit. Start reading data each 16 CLK.
                 READ_EN <= '1';
-                CLK_CNT_EN <= '1';
+                CLK_CNT_EN <= '1'; -- when READ_EN = '1' & CLK_CNT_EN = '1', CLK counter is limited by 16 CLK, then is restarted. 
                 VALID <= '0';              
-                if BIT_CNT = "1000" then -- get 8 bits
+                if BIT_CNT = "1000" then -- have read 8 data-bits.
                     next_state <= WAIT_FOR_STOP;
                 end if;
 
