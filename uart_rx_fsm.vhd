@@ -12,7 +12,7 @@ entity UART_RX_FSM is
        CLK : in std_logic;
        RST : in std_logic;
        -- INPUTS
-       DATA_IN : in std_logic;
+       DIN : in std_logic;
        BIT_CNT : in std_logic_vector(3 downto 0);
        CLK_CNT : in std_logic_vector(3 downto 0);
        --OUPUTS
@@ -41,14 +41,14 @@ begin
         end if;
     end process;
 
-    p_next_state_selecor : process (current_state, DATA_IN, BIT_CNT, CLK_CNT)
+    p_next_state_selecor : process (current_state, DIN, BIT_CNT, CLK_CNT)
     begin
         case current_state is
             when WAIT_FOR_START => -- waiting for start-bit.
                 READ_EN <= '0';
                 CLK_CNT_EN <= '0';
                 VALID <= '0';
-                if DATA_IN = '0' then -- start-bit is logic '0'.
+                if DIN = '0' then -- start-bit is logic '0'.
                     next_state <= WAIT_FOR_MID_BIT;
                 end if;
 
@@ -79,7 +79,7 @@ begin
                 CLK_CNT_EN <= '1';
                 VALID <= '0';
                 if CLK_CNT = "1111" then
-                    if DATA_IN = '1' then
+                    if DIN = '1' then
                         next_state <= VALIDATING;
                     else
                         next_state <= WAIT_FOR_START;

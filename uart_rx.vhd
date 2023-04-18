@@ -52,7 +52,7 @@ begin
         CLK => CLK,
         RST => RST,
         -- INPUTS
-        DATA_IN => DIN,
+        DIN => DIN,
         BIT_CNT => bit_cnt,
         CLK_CNT => clk_cnt,
         --OUPUTS
