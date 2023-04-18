@@ -60,7 +60,7 @@ begin
                     next_state <= CLK_CNT_RST;
                 end if;
 
-            when CLK_CNT_RST => -- restart CLK counter. 
+            when CLK_CNT_RST => -- restart CLK counter.  
                 READ_EN <= '0';
                 CLK_CNT_EN <= '0';
                 VALID <= '0';

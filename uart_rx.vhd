@@ -51,7 +51,7 @@ begin
     port map (
         CLK => CLK,
         RST => RST,
-        -- INPUTS
+        -- INPUTS 
         DIN => DIN,
         BIT_CNT => bit_cnt,
         CLK_CNT => clk_cnt,
