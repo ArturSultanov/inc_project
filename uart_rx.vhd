@@ -39,7 +39,6 @@ architecture behavioral of UART_RX is
     -- shift register output
     signal shift_out : std_logic_vector(7 downto 0);
 
-    
 begin
 
     -- Logic gates
@@ -74,7 +73,7 @@ begin
         end if;
     end process;
 
-    -- CMP equal
+    -- CMP equal (finding mid-bit)
     p_cmp_equal : process (clk_cnt)
     begin
         if clk_cnt = "1111" then
@@ -83,7 +82,6 @@ begin
             cmp_equal <= '0';
         end if;
     end process;
-
 
     -- Bit counter
 	p_clk_bits : process (CLK)
@@ -99,21 +97,17 @@ begin
 		end if;
 	end process;
 
-
     -- Shift register
     p_shift_register : process (CLK)
-		--variable shift_out : std_logic_vector(7 downto 0);
 	begin
 		if rising_edge(CLK) then
 			if and_out = '1' then
-				--shift_out := DIN & shift_out(7 downto 1);
                 shift_out <= DIN & shift_out(7 downto 1);
-                   --DOUT <= shift_out;
 			end if;
 		end if;
 	end process;
 
-
+    -- Outputs            
     DOUT <= shift_out;
     DOUT_VLD <= valid;
 end architecture;
