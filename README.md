@@ -11,4 +11,4 @@ Navrhněte obvod pro příjem datových slov po asynchronní sériové lince (UA
 
 • Obvod UART_RX bude přijímat jednotlivé bity na vstupním datovém portu DIN, provede jejich de-serializaci a výsledné 8-bitové slovo zapíše na datový port DOUT. Platnost datového slova na portu DOUT potvrďte nastavením příznaku DOUT_VLD na úroveň logické 1 po dobu jednoho taktu hodinového signálu CLK.
 
-
+Score: ??/20 
