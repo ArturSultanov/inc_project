@@ -5,6 +5,7 @@ University project of programming in VHDL.
 Task:
 
 Navrhněte obvod pro příjem datových slov po asynchronní sériové lince (UART_RX).
+
 • Vycházejte ze základních informací o fungování a zpracování asynchronní sériové komunikace.
 
 • Uvažujte vstupní tok dat v pevném formátu: jeden START bit, 8 bitů dat, jeden STOP bit, zasílaných rychlostí 9600 baudů za sekundu. Přijímací obvod bude pracovat na 16x vyšší frekvenci (signál CLK) ve srovnání s přenosovou rychlostí jednotlivých datových bitů. Vašim úkolem bude snímat datové bity uprostřed přenášeného intervalu.
